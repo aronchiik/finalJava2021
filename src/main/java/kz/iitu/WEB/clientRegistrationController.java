@@ -1,4 +1,4 @@
-package kz.iitu.Controller;
+package kz.iitu.WEB;
 
 import kz.iitu.Service.ClientService;
 import kz.iitu.WEB.DTO.ClientRegistrationDto;

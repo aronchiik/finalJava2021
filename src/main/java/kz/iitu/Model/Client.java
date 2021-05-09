@@ -23,34 +23,15 @@ public class Client implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "clients_movies",
+            name = "clients_roles",
             joinColumns = @JoinColumn(
-                    name = "client_id",referencedColumnName = "id"),
+                    name = "client_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "movie_id",referencedColumnName = "id"))
-    private Collection<Movie> movies;
+                    name = "role_id", referencedColumnName = "id"))
 
-//
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "clients_roles",
-//            joinColumns=@JoinColumn (
-//                    name = "client_id",referencedColumnName = "id"),
-//            inverseJoinColumns =@JoinColumn(
-//                    name = "roles_id",referencedColumnName = "id")
-//    )
-//        Set<Role> projects = new HashSet<>();
-//    private Collection<Role> roles;
+    private Collection<Role> roles;
 
-//    public Collection<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Collection<Role> roles) {
-//        this.roles = roles;
-//    }
 
-    //
     @Column(name = "is_admin", nullable = false, columnDefinition = "boolean default false")
     private boolean isAdmin;
 
@@ -78,8 +59,6 @@ public class Client implements Serializable {
         this.nick = nick;
     }
 
-
-
     public String getLogin() {
         return login;
     }
@@ -96,19 +75,19 @@ public class Client implements Serializable {
         this.password = password;
     }
 
-    public Collection<Movie> getRoles() {
-        return movies;
+    public Collection<Role> getRoles() {
+        return roles;
     }
-    public void setRoles(Collection<Movie> roles) {
-        this.movies = movies;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
 
-    public Client(String nick, String login, String password, boolean isAdmin) {
+    public Client(String nick, String login, String password,Collection<Role> roles) {
         this.nick = nick;
         this.login = login;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.roles = roles;
     }
 
     public Client(String nick, String login, String password) {

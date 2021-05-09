@@ -2,6 +2,7 @@ package kz.iitu.Service;
 
 import kz.iitu.Model.Client;
 import kz.iitu.Model.Movie;
+import kz.iitu.Model.Role;
 import kz.iitu.Repository.ClientRepository;
 import kz.iitu.WEB.DTO.ClientRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,32 +20,35 @@ import java.util.stream.Collectors;
 @Service
 public class ClientServiceImp implements ClientService {
 
-    @Autowired
+
     private ClientRepository clientRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public ClientServiceImp(ClientRepository clientRepository) {
+        super();
         this.clientRepository = clientRepository;
     }
 
     @Override
     public Client save(ClientRegistrationDto registrationDto){
         Client client = new Client(registrationDto.getNick(),
-                registrationDto.getLogin(), bCryptPasswordEncoder.encode(registrationDto.getPassword()));
+                registrationDto.getLogin(), bCryptPasswordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
         return clientRepository.save(client);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String clientname) throws UsernameNotFoundException {
-        Client client = clientRepository.findByEmail(clientname);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Client client = clientRepository.findClientByLogin(login);
         if(client == null) {
             throw new UsernameNotFoundException("Invalid clientName or password.");
         }
-        return new org.springframework.security.core.userdetails.User(client.getLogin(),client.getPassword(), null);
+        return new org.springframework.security.core.userdetails.User(client.getLogin(),client.getPassword(), mapRolesToAuthorities(client.getRoles()));
     }
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Movie> movies){
-        return movies.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
 }

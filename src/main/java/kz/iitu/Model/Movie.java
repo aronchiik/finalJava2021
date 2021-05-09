@@ -27,6 +27,10 @@ public class Movie implements Serializable {
         return name;
     }
 
+    public Movie(){
+
+    }
+
     public void setName(String name) {
         this.name = name;
     }
