@@ -1,13 +1,12 @@
 package kz.iitu.Model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "clients")
-public class Clients implements Serializable {
+public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +20,15 @@ public class Clients implements Serializable {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "clients_movies",
+            joinColumns = @JoinColumn(
+                    name = "client_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "movie_id",referencedColumnName = "id"))
+    private Collection<Movie> movies;
 
 //
 //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -88,17 +96,17 @@ public class Clients implements Serializable {
         this.password = password;
     }
 
-    public Clients(String nick, String login, String password, boolean isAdmin) {
+    public Client(String nick, String login, String password, boolean isAdmin) {
         this.nick = nick;
         this.login = login;
         this.password = password;
         this.isAdmin = isAdmin;
     }
 
-    public Clients(String nick, String login, String password) {
+    public Client(String nick, String login, String password) {
         this.nick = nick;
         this.login = login;
         this.password = password;
     }
-    public Clients(){}
+    public Client(){}
 }

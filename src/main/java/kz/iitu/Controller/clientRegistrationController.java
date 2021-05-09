@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class clientRegistrationController {
 
 
-    private final  ClientService clientService;
+    private  ClientService clientService;
 
-    @Autowired
     public clientRegistrationController(ClientService clientService) {
         this.clientService = clientService;
     }
@@ -33,6 +32,6 @@ public class clientRegistrationController {
     public String registrClient(@ModelAttribute("client")
                       ClientRegistrationDto clientregistrationDto){
         clientService.save(clientregistrationDto );
-        return "welcome";
+        return "redirect:/registration?success";
     }
 }
