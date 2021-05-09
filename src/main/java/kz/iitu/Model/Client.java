@@ -96,6 +96,14 @@ public class Client implements Serializable {
         this.password = password;
     }
 
+    public Collection<Movie> getRoles() {
+        return movies;
+    }
+    public void setRoles(Collection<Movie> roles) {
+        this.movies = movies;
+    }
+
+
     public Client(String nick, String login, String password, boolean isAdmin) {
         this.nick = nick;
         this.login = login;
