@@ -33,6 +33,6 @@ public class clientRegistrationController {
     public String registrClient(@ModelAttribute("client")
                       ClientRegistrationDto clientregistrationDto){
         clientService.save(clientregistrationDto );
-        return "redirect://registrationys?success";
+        return "welcome";
     }
 }
